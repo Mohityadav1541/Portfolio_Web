@@ -157,61 +157,47 @@ export default function GitHubSection() {
           )}
         </div>
 
-        {/* Contribution Heatmap Visualization */}
+        {/* GitHub Stats Summary */}
         {repositories.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5 }}
-            className="mt-16 bg-background/40 backdrop-blur-md border border-secondary/30 rounded-lg p-8"
-            style={{ boxShadow: '0 0 30px rgba(0, 255, 255, 0.15)' }}
+            className="mt-16 grid md:grid-cols-3 gap-6"
           >
-            <h3 className="font-heading text-2xl text-secondary mb-6">
-              {'>'} CONTRIBUTION_ACTIVITY
-            </h3>
-            
-            <div className="grid grid-cols-12 gap-2">
-              {Array.from({ length: 52 }).map((_, weekIndex) => (
-                <div key={weekIndex} className="space-y-2">
-                  {Array.from({ length: 7 }).map((_, dayIndex) => {
-                    const intensity = Math.random();
-                    return (
-                      <motion.div
-                        key={`${weekIndex}-${dayIndex}`}
-                        initial={{ scale: 0 }}
-                        whileInView={{ scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: (weekIndex * 7 + dayIndex) * 0.002 }}
-                        whileHover={{ scale: 1.5 }}
-                        className="w-full aspect-square rounded-sm cursor-pointer"
-                        style={{
-                          backgroundColor: intensity > 0.7 ? '#00FF00' : intensity > 0.4 ? '#00AA00' : intensity > 0.2 ? '#006600' : '#0A0A0A',
-                          border: '1px solid rgba(0, 255, 0, 0.2)',
-                          boxShadow: intensity > 0.5 ? '0 0 5px rgba(0, 255, 0, 0.5)' : 'none',
-                        }}
-                        title={`Activity: ${Math.floor(intensity * 100)}%`}
-                      />
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex items-center justify-end gap-2 mt-6">
-              <span className="font-heading text-xs text-foreground/60">Less</span>
-              {[0, 0.25, 0.5, 0.75, 1].map((intensity, i) => (
-                <div
-                  key={i}
-                  className="w-4 h-4 rounded-sm"
-                  style={{
-                    backgroundColor: intensity > 0.7 ? '#00FF00' : intensity > 0.4 ? '#00AA00' : intensity > 0.2 ? '#006600' : '#0A0A0A',
-                    border: '1px solid rgba(0, 255, 0, 0.2)',
-                  }}
-                />
-              ))}
-              <span className="font-heading text-xs text-foreground/60">More</span>
-            </div>
+            {[
+              {
+                label: 'Total Repositories',
+                value: repositories.length,
+                icon: '📦',
+              },
+              {
+                label: 'Total Stars',
+                value: repositories.reduce((sum, repo) => sum + (repo.starsCount || 0), 0),
+                icon: '⭐',
+              },
+              {
+                label: 'Languages Used',
+                value: new Set(repositories.map(r => r.primaryLanguage).filter(Boolean)).size,
+                icon: '💻',
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+                whileHover={{ y: -5 }}
+                className="bg-background/40 backdrop-blur-md border border-primary/30 rounded-lg p-6 text-center hover:border-primary/60 transition-all"
+                style={{ boxShadow: '0 0 30px rgba(0, 255, 0, 0.1)' }}
+              >
+                <div className="text-3xl mb-3">{stat.icon}</div>
+                <div className="font-heading text-3xl text-primary mb-2">{stat.value}</div>
+                <div className="font-heading text-sm text-foreground/60">{stat.label}</div>
+              </motion.div>
+            ))}
           </motion.div>
         )}
       </div>
