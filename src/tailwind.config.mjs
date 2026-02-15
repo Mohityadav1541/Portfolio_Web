@@ -19,8 +19,8 @@ export default {
                 '9xl': ['8rem', { lineHeight: '1.0', letterSpacing: '-0.07em', fontWeight: '900' }],
             },
             fontFamily: {
-                heading: "azeret-mono",
-                paragraph: "azeret-mono"
+                heading: "'Azeret Mono', monospace",
+                paragraph: "'Azeret Mono', monospace"
             },
             colors: {
                 'accent-purple': '#8A2BE2',
