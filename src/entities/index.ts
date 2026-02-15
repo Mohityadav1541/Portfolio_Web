@@ -36,8 +36,14 @@ export interface Education {
   _id: string;
   _createdDate?: Date;
   _updatedDate?: Date;
+  /** @wixFieldType url */
+  credentialUrl?: string;
+  /** @wixFieldType text */
+  entryType?: string;
   /** @wixFieldType text */
   degreeName?: string;
+  /** @wixFieldType image - Contains image URL, render with <Image> component, NOT as text */
+  certificateImage?: string;
   /** @wixFieldType text */
   institution?: string;
   /** @wixFieldType number */
