@@ -3,3 +3,153 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* ── Glitch animation ─────────────────────────────────────────────────────── */
+@keyframes glitch-1 {
+  0%   { clip-path: inset(20% 0 55% 0); transform: translate(-4px, 0); }
+  20%  { clip-path: inset(80% 0 2%  0); transform: translate(4px, 0); }
+  40%  { clip-path: inset(30% 0 40% 0); transform: translate(-4px, 0); }
+  60%  { clip-path: inset(60% 0 15% 0); transform: translate(4px, 0); }
+  80%  { clip-path: inset(10% 0 70% 0); transform: translate(-4px, 0); }
+  100% { clip-path: inset(45% 0 30% 0); transform: translate(4px, 0); }
+}
+@keyframes glitch-2 {
+  0%   { clip-path: inset(55% 0 20% 0); transform: translate(3px, 0); }
+  25%  { clip-path: inset(5%  0 85% 0); transform: translate(-3px, 0); }
+  50%  { clip-path: inset(70% 0 10% 0); transform: translate(3px, 0); }
+  75%  { clip-path: inset(15% 0 65% 0); transform: translate(-3px, 0); }
+  100% { clip-path: inset(40% 0 35% 0); transform: translate(3px, 0); }
+}
+
+.glitch-text { position: relative; display: inline-block; }
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch-text::before {
+  color: #ff003c;
+  animation: glitch-1 4s infinite linear alternate-reverse;
+  opacity: 0.35;
+}
+.glitch-text::after {
+  color: #0038ff;
+  animation: glitch-2 3s infinite linear alternate-reverse;
+  opacity: 0.25;
+}
+
+/* ── Neon pulse ───────────────────────────────────────────────────────────── */
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(0,255,0,0.4),  0 0 24px rgba(0,255,0,0.15); }
+  50%       { box-shadow: 0 0 18px rgba(0,255,0,0.8), 0 0 50px rgba(0,255,0,0.35); }
+}
+.neon-pulse { animation: neon-pulse 2s ease-in-out infinite; }
+
+/* ── Floating ─────────────────────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-14px); }
+}
+.float { animation: float 4s ease-in-out infinite; }
+
+/* ── Holographic shimmer ──────────────────────────────────────────────────── */
+@keyframes holo-move {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+.holo-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0,255,0,0.07),
+    rgba(0,255,255,0.18),
+    rgba(138,43,226,0.12),
+    rgba(0,255,0,0.07),
+    rgba(0,255,255,0.18)
+  );
+  background-size: 200% auto;
+  animation: holo-move 4s linear infinite;
+}
+
+/* ── 3D card class ────────────────────────────────────────────────────────── */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.card-3d:hover {
+  transform: perspective(1000px) rotateX(-4deg) rotateY(8deg) translateZ(12px);
+  box-shadow: -8px 16px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,255,0,0.12);
+}
+
+/* ── Section separator ────────────────────────────────────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,0,0.3), rgba(0,255,255,0.3), rgba(138,43,226,0.3), transparent);
+  margin: 0;
+}
+
+/* ── Scanline overlay ─────────────────────────────────────────────────────── */
+.scanline-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,255,0,0.012) 3px, rgba(0,255,0,0.012) 4px
+  );
+}
+
+/* ── Custom scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00ff00, #00ffff, #8a2be2);
+  border-radius: 4px;
+}
+
+/* ── Text selection ───────────────────────────────────────────────────────── */
+::selection { background: rgba(0,255,0,0.2); color: #00ff00; }
+
+/* ── Magnetic button ──────────────────────────────────────────────────────── */
+.btn-magnetic {
+  transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+/* ── Depth layers ─────────────────────────────────────────────────────────── */
+.depth-1 { transform: translateZ(10px); }
+.depth-2 { transform: translateZ(20px); }
+.depth-3 { transform: translateZ(30px); }
+
+/* ── Typing cursor blink ──────────────────────────────────────────────────── */
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+.cursor-blink { animation: blink 1s step-end infinite; }
+
+/* ── CRT flicker ──────────────────────────────────────────────────────────── */
+@keyframes crt-flicker {
+  0%   { opacity: 1; }
+  98%  { opacity: 1; }
+  99%  { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+.crt { animation: crt-flicker 6s infinite; }
+
+/* ── Hexagon clip ─────────────────────────────────────────────────────────── */
+.hex-clip {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* ── Rainbow border animation ─────────────────────────────────────────────── */
+@keyframes rainbow-border {
+  0%   { border-color: #00ff00; box-shadow: 0 0 15px #00ff0040; }
+  33%  { border-color: #00ffff; box-shadow: 0 0 15px #00ffff40; }
+  66%  { border-color: #8a2be2; box-shadow: 0 0 15px #8a2be240; }
+  100% { border-color: #00ff00; box-shadow: 0 0 15px #00ff0040; }
+}
+.rainbow-border { animation: rainbow-border 4s linear infinite; }

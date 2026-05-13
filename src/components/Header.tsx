@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Terminal } from 'lucide-react';
+import { Menu, X, Terminal, FileText } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,6 +68,20 @@ export default function Header() {
                 />
               </motion.button>
             ))}
+            <motion.a
+              href="/resume.pdf"
+              download="Mohit_Yadav_Resume.pdf"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: navItems.length * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 font-heading text-sm px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-background transition-all duration-300 rounded"
+              style={{ boxShadow: '0 0 15px rgba(0,255,0,0.3)' }}
+            >
+              <FileText className="w-4 h-4" />
+              RESUME
+            </motion.a>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -101,6 +115,15 @@ export default function Header() {
                   {item.label}
                 </motion.button>
               ))}
+              <motion.a
+                href="/resume.pdf"
+                download="Mohit_Yadav_Resume.pdf"
+                className="flex items-center gap-2 font-heading text-sm text-primary py-2"
+                whileHover={{ x: 10 }}
+              >
+                <FileText className="w-4 h-4" />
+                &gt; DOWNLOAD RESUME
+              </motion.a>
             </div>
           </motion.nav>
         )}

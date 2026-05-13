@@ -43,8 +43,10 @@ export default function CodingStatsSection() {
       step++;
       const progress = step / steps;
 
+      // problemsSolvedCount is the goal (100); current is progressIndicatorValue (35)
+      const currentSolved = (statsData as any).currentSolved ?? statsData.progressIndicatorValue ?? 35;
       setAnimatedValues({
-        problems: Math.floor((statsData.problemsSolvedCount || 0) * progress),
+        problems: Math.floor(currentSolved * progress),
         streak: Math.floor((statsData.dailyStreakCount || 0) * progress),
         ranking: Math.floor((statsData.globalRanking || 0) * progress),
       });
@@ -52,7 +54,7 @@ export default function CodingStatsSection() {
       if (step >= steps) {
         clearInterval(timer);
         setAnimatedValues({
-          problems: statsData.problemsSolvedCount || 0,
+          problems: currentSolved,
           streak: statsData.dailyStreakCount || 0,
           ranking: statsData.globalRanking || 0,
         });
@@ -80,36 +82,50 @@ export default function CodingStatsSection() {
         <div className="min-h-[400px]">
           {isLoading ? null : stats ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Problems Solved */}
+              {/* DSA Goal Tracker */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="bg-background/40 backdrop-blur-md border border-primary/30 rounded-lg p-6 hover:border-primary/60 transition-all group"
+                className="bg-background/40 backdrop-blur-md border border-primary/30 rounded-lg p-6 hover:border-primary/60 transition-all group relative overflow-hidden"
                 style={{ boxShadow: '0 0 30px rgba(0, 255, 0, 0.15)' }}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <Target className="w-8 h-8 text-primary" />
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                    className="w-2 h-2 rounded-full bg-primary"
-                    style={{ boxShadow: '0 0 10px rgba(0, 255, 0, 0.8)' }}
-                  />
+                {/* IN PROGRESS badge */}
+                <motion.div
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute top-3 right-3 bg-primary/20 border border-primary/40 rounded px-2 py-0.5"
+                >
+                  <span className="font-heading text-[10px] text-primary">IN_PROGRESS</span>
+                </motion.div>
+
+                <div className="flex items-center gap-2 mb-3">
+                  <Target className="w-6 h-6 text-primary" />
+                  <h3 className="font-heading text-xs text-foreground/60">DSA_CHALLENGE</h3>
                 </div>
-                <h3 className="font-heading text-sm text-foreground/60 mb-2">PROBLEMS_SOLVED</h3>
-                <p className="font-heading text-4xl text-primary mb-2">{animatedValues.problems}</p>
-                <div className="h-1 bg-background rounded-full overflow-hidden">
+
+                {/* Goal fraction */}
+                <div className="flex items-end gap-1 mb-1">
+                  <span className="font-heading text-4xl text-primary">{animatedValues.problems}</span>
+                  <span className="font-heading text-xl text-foreground/40 mb-1">/ 100</span>
+                </div>
+                <p className="font-heading text-xs text-foreground/40 mb-3">problems solved</p>
+
+                {/* Progress bar with % */}
+                <div className="h-2 bg-background/60 rounded-full overflow-hidden border border-primary/10">
                   <motion.div
                     initial={{ width: 0 }}
-                    whileInView={{ width: '100%' }}
+                    whileInView={{ width: `${stats.progressIndicatorValue || 35}%` }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.5, delay: 0.3 }}
-                    className="h-full bg-primary"
+                    className="h-full bg-gradient-to-r from-primary to-secondary rounded-full"
                     style={{ boxShadow: '0 0 10px rgba(0, 255, 0, 0.8)' }}
                   />
                 </div>
+                <p className="font-heading text-xs text-primary/70 mt-1 text-right">
+                  {stats.progressIndicatorValue || 35}% to goal 🎯
+                </p>
               </motion.div>
 
               {/* Daily Streak */}
