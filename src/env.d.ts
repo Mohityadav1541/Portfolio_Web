@@ -1,5 +1,3 @@
-import type { PageMetadata } from "@wix/astro-pages";
-
 /// <reference types="astro/client" />
 /// <reference path="../.astro/types.d.ts" />
 
@@ -15,8 +13,13 @@ declare global {
   }
 
   interface ImportMetaEnv {
-    readonly BASE_NAME: string;
+    readonly BASE_NAME?: string;
   }
+}
+
+interface PageMetadata {
+  pageIdentifier?: string;
+  [key: string]: unknown;
 }
 
 declare module "react-router-dom" {

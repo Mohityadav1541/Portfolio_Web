@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "astro",
+  "rewrites": [
+    {
+      "source": "/((?!_astro|assets|favicon|error\\.svg|robots\\.txt|sitemap).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

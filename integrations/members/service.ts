@@ -1,15 +1,4 @@
-import { members } from "@wix/members";
-import { Member } from ".";
-
-export const getCurrentMember = async (): Promise<Member | null> => {
-  try {
-    const member = await members.getCurrentMember({ fieldsets: ["FULL"] });
-    if (!member) {
-      console.log('==== No member found');
-    }
-    return member.member;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
+// Stub — Wix members integration removed for local development
+import type { ReactNode } from 'react';
+export const MemberProvider = ({ children }: { children: ReactNode }) => children;
+export const useCurrentMember = () => null;
