@@ -19,6 +19,7 @@ const SPEECH_TEXT =
 
 export default function RobotGreeting() {
   const [show, setShow] = useState(false);
+  const [started, setStarted] = useState(false);
   const [visibleLines, setVisibleLines] = useState<number[]>([]);
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(false);
@@ -31,6 +32,10 @@ export default function RobotGreeting() {
     hasRun.current = true;
 
     setShow(true);
+  }, []);
+
+  const handleStart = () => {
+    setStarted(true);
 
     // Show lines progressively
     GREETING_LINES.forEach(({ delay }, i) => {
@@ -107,9 +112,10 @@ export default function RobotGreeting() {
     } else {
       setTimeout(dismiss, 6000);
     }
+  };
 
+  useEffect(() => {
     return () => {
-      clearInterval(progressTimer);
       window.speechSynthesis?.cancel();
     };
   }, []);
@@ -162,6 +168,26 @@ export default function RobotGreeting() {
 
           {/* Main content */}
           <div className="relative w-full max-w-2xl mx-auto px-8">
+            {!started ? (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex flex-col items-center justify-center text-center h-64"
+              >
+                <div className="text-primary font-heading mb-6 tracking-widest" style={{ textShadow: '0 0 10px rgba(0,255,0,0.8)' }}>
+                  AWAITING USER INPUT TO INITIALIZE SYSTEM
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(0,255,0,0.5)' }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleStart}
+                  className="px-8 py-3 border-2 border-primary text-primary font-heading tracking-widest uppercase hover:bg-primary/20 transition-all"
+                >
+                  [ INITIATE CONNECTION ]
+                </motion.button>
+              </motion.div>
+            ) : (
+              <>
 
             {/* Robot ASCII face */}
             <motion.div
@@ -282,6 +308,8 @@ export default function RobotGreeting() {
             >
               [ SKIP → ]
             </motion.button>
+            </>
+            )}
           </div>
         </motion.div>
       )}
